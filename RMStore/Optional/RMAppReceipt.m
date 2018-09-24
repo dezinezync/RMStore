@@ -111,23 +111,29 @@ static NSURL *_appleRootCertificateURL = nil;
     {
         NSMutableArray *purchases = [NSMutableArray array];
          // Explicit casting to avoid errors when compiling as Objective-C++
+        
+        __weak typeof(self) wself = self;
+        
         [RMAppReceipt enumerateASN1Attributes:(const uint8_t*)asn1Data.bytes length:asn1Data.length usingBlock:^(NSData *data, int type) {
             const uint8_t *s = (const uint8_t*)data.bytes;
             const NSUInteger length = data.length;
+            
+            __strong typeof(wself) sself = wself;
+            
             switch (type)
             {
                 case RMAppReceiptASN1TypeBundleIdentifier:
-                    _bundleIdentifierData = data;
-                    _bundleIdentifier = RMASN1ReadUTF8String(&s, length);
+                    sself->_bundleIdentifierData = data;
+                    sself->_bundleIdentifier = RMASN1ReadUTF8String(&s, length);
                     break;
                 case RMAppReceiptASN1TypeAppVersion:
-                    _appVersion = RMASN1ReadUTF8String(&s, length);
+                    sself->_appVersion = RMASN1ReadUTF8String(&s, length);
                     break;
                 case RMAppReceiptASN1TypeOpaqueValue:
-                    _opaqueValue = data;
+                    sself->_opaqueValue = data;
                     break;
                 case RMAppReceiptASN1TypeHash:
-                    _receiptHash = data;
+                    sself->_receiptHash = data;
                     break;
                 case RMAppReceiptASN1TypeInAppPurchaseReceipt:
                 {
@@ -136,12 +142,12 @@ static NSURL *_appleRootCertificateURL = nil;
                     break;
                 }
                 case RMAppReceiptASN1TypeOriginalAppVersion:
-                    _originalAppVersion = RMASN1ReadUTF8String(&s, length);
+                    sself->_originalAppVersion = RMASN1ReadUTF8String(&s, length);
                     break;
                 case RMAppReceiptASN1TypeExpirationDate:
                 {
                     NSString *string = RMASN1ReadIA5SString(&s, length);
-                    _expirationDate = [RMAppReceipt formatRFC3339String:string];
+                    sself->_expirationDate = [RMAppReceipt formatRFC3339String:string];
                     break;
                 }
             }
@@ -329,49 +335,55 @@ static NSURL *_appleRootCertificateURL = nil;
 {
     if (self = [super init])
     {
+        
+        __weak typeof(self) wself = self;
+        
         // Explicit casting to avoid errors when compiling as Objective-C++
         [RMAppReceipt enumerateASN1Attributes:(const uint8_t*)asn1Data.bytes length:asn1Data.length usingBlock:^(NSData *data, int type) {
             const uint8_t *p = (const uint8_t*)data.bytes;
             const NSUInteger length = data.length;
+            
+            __strong typeof(wself) sself = wself;
+            
             switch (type)
             {
                 case RMAppReceiptASN1TypeQuantity:
-                    _quantity = RMASN1ReadInteger(&p, length);
+                    sself->_quantity = RMASN1ReadInteger(&p, length);
                     break;
                 case RMAppReceiptASN1TypeProductIdentifier:
-                    _productIdentifier = RMASN1ReadUTF8String(&p, length);
+                    sself->_productIdentifier = RMASN1ReadUTF8String(&p, length);
                     break;
                 case RMAppReceiptASN1TypeTransactionIdentifier:
-                    _transactionIdentifier = RMASN1ReadUTF8String(&p, length);
+                    sself->_transactionIdentifier = RMASN1ReadUTF8String(&p, length);
                     break;
                 case RMAppReceiptASN1TypePurchaseDate:
                 {
                     NSString *string = RMASN1ReadIA5SString(&p, length);
-                    _purchaseDate = [RMAppReceipt formatRFC3339String:string];
+                    sself->_purchaseDate = [RMAppReceipt formatRFC3339String:string];
                     break;
                 }
                 case RMAppReceiptASN1TypeOriginalTransactionIdentifier:
-                    _originalTransactionIdentifier = RMASN1ReadUTF8String(&p, length);
+                    sself->_originalTransactionIdentifier = RMASN1ReadUTF8String(&p, length);
                     break;
                 case RMAppReceiptASN1TypeOriginalPurchaseDate:
                 {
                     NSString *string = RMASN1ReadIA5SString(&p, length);
-                    _originalPurchaseDate = [RMAppReceipt formatRFC3339String:string];
+                    sself->_originalPurchaseDate = [RMAppReceipt formatRFC3339String:string];
                     break;
                 }
                 case RMAppReceiptASN1TypeSubscriptionExpirationDate:
                 {
                     NSString *string = RMASN1ReadIA5SString(&p, length);
-                    _subscriptionExpirationDate = [RMAppReceipt formatRFC3339String:string];
+                    sself->_subscriptionExpirationDate = [RMAppReceipt formatRFC3339String:string];
                     break;
                 }
                 case RMAppReceiptASN1TypeWebOrderLineItemID:
-                    _webOrderLineItemID = RMASN1ReadInteger(&p, length);
+                    sself->_webOrderLineItemID = RMASN1ReadInteger(&p, length);
                     break;
                 case RMAppReceiptASN1TypeCancellationDate:
                 {
                     NSString *string = RMASN1ReadIA5SString(&p, length);
-                    _cancellationDate = [RMAppReceipt formatRFC3339String:string];
+                    sself->_cancellationDate = [RMAppReceipt formatRFC3339String:string];
                     break;
                 }
             }
