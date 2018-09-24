@@ -1,12 +1,11 @@
+os: osx
+osx_image: xcode10
 language: objective-c
 before_script:
-  - brew update
-  - brew upgrade xctool || true
+  - gem install xcpretty || true
 script:
-  - xctool -project RMStore.xcodeproj -scheme 'RMStoreExcludeKeychainTests' -configuration Release -sdk iphonesimulator build-tests
-  - xctool -project RMStore.xcodeproj -scheme 'RMStoreExcludeKeychainTests' -configuration Release run-tests -test-sdk iphonesimulator8.1
-  - xctool -project RMStore.xcodeproj -scheme 'RMStoreExcludeKeychainTests' -configuration Release run-tests -test-sdk iphonesimulator7.1
-  - xctool -project RMStore.xcodeproj -scheme 'RMStoreDemo' -configuration Release -sdk iphonesimulator
+  - xcodebuild -project RMStore.xcodeproj -scheme 'RMStoreExcludeKeychainTests' -configuration Release -sdk iphonesimulator | xcpretty
+  - xcodebuild -project RMStore.xcodeproj -scheme 'RMStoreExcludeKeychainTests' -destination 'platform=iOS Simulator,name=iPhone SE,OS=12.0' test | xcpretty
 branches:
   only:
     - master
