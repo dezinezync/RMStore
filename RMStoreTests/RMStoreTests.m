@@ -1248,7 +1248,7 @@
 {
     id download = [OCMockObject mockForClass:[SKDownload class]];
     [[[download stub] andReturn:@"content"] contentIdentifier];
-    [[[download stub] andReturnValue:@(state)] downloadState];
+    [[[download stub] andReturnValue:@(state)] state];
     return download;
 }
 
