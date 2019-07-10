@@ -123,16 +123,15 @@ NSString* const RMStoreTransactionsUserDefaultsKey = @"RMStoreTransactions";
 
 - (NSData*)dataWithTransaction:(RMStoreTransaction*)transaction
 {
-    NSMutableData *data = [[NSMutableData alloc] init];
-    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
+    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initRequiringSecureCoding:YES];
     [archiver encodeObject:transaction];
     [archiver finishEncoding];
-    return data;
+    return archiver.encodedData;
 }
 
 - (RMStoreTransaction*)transactionWithData:(NSData*)data
 {
-    NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
+    NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingFromData:data error:nil];
     RMStoreTransaction *transaction = [unarchiver decodeObject];
     [unarchiver finishDecoding];
     return transaction;
