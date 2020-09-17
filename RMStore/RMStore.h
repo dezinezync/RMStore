@@ -31,6 +31,10 @@ extern NSInteger const RMStoreErrorCodeDownloadCanceled;
 extern NSInteger const RMStoreErrorCodeUnknownProductIdentifier;
 extern NSInteger const RMStoreErrorCodeUnableToCompleteVerification;
 
+extern NSNotificationName RMStoreReceiptDidValidate;
+extern NSNotificationName RMStoreReceiptFailedToValidate;
+extern NSString *const RMStoreUserInfoTransactionKey;
+
 /** A StoreKit wrapper that adds blocks and notifications, plus optional receipt verification and purchase management.
  */
 @interface RMStore : NSObject<SKPaymentTransactionObserver>

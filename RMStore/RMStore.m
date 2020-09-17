@@ -63,6 +63,11 @@ typedef void (^RMSKProductsRequestSuccessBlock)(NSArray *products, NSArray *inva
 typedef void (^RMStoreFailureBlock)(NSError *error);
 typedef void (^RMStoreSuccessBlock)(void);
 
+NSNotificationName RMStoreReceiptDidValidate = @"com.rmstore.receiptDidValidate";
+NSNotificationName RMStoreReceiptFailedToValidate = @"com.rmstore.receiptFailedToValidate";
+
+NSString *const RMStoreUserInfoTransactionKey = @"com.rmstore.key.transaction";
+
 @implementation NSNotification(RMStore)
 
 - (float)rm_downloadProgress
